@@ -18,10 +18,10 @@ import { Item } from './interfaces/item.interface';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
-  @Get()
-  findAll(): Item[] {
-    return this.itemsService.findAll();
-  }
+  // @Get()
+  // findAll(): Item[] {
+  //   return this.itemsService.findAll();
+  // }
 
   // //  GET localhost:3000/items
   // @Get()
@@ -34,8 +34,18 @@ export class ItemsController {
   // }
 
   //  GET localhost:3000/items/1
+  // @Get(':id')
+  // findOne(@Param('id') id): Item {
+  //   return this.itemsService.findOne(id);
+  // }
+
+  @Get()
+  findAll(): Promise<Item[]> {
+    return this.itemsService.findAll();
+  }
+
   @Get(':id')
-  findOne(@Param('id') id): Item {
+  findOne(@Param('id') id): Promise<Item> {
     return this.itemsService.findOne(id);
   }
 
@@ -46,15 +56,24 @@ export class ItemsController {
   //        "description": "This is the first item",
   //        "quantity": 100
   //    }
+  // @Post()
+  // create(@Body() createItemDto: CreateItemDto): string {
+  //   return `Name: ${createItemDto.name} Desc: ${createItemDto.description}`;
+  // }
+
   @Post()
-  create(@Body() createItemDto: CreateItemDto): string {
-    return `Name: ${createItemDto.name} Desc: ${createItemDto.description}`;
+  create(@Body() createItemDto: CreateItemDto): Promise<Item> {
+    return this.itemsService.create(createItemDto);
   }
 
   //   DELETE to localhost:3000/items
+  // @Delete(':id')
+  // delete(@Param('id') id: string) {
+  //   return `Delete ${id}`;
+  // }
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return `Delete ${id}`;
+  delete(@Param('id') id): Promise<Item> {
+    return this.itemsService.delete(id);
   }
 
   //   POST to localhost:3000/items/1
@@ -63,8 +82,12 @@ export class ItemsController {
   //        "description": "This is the first item",
   //        "quantity": 101
   //    }
+  // @Put(':id')
+  // update(@Body() updateItemDto: CreateItemDto, @Param('id') id): string {
+  //   return `Update ${id} - Name: ${updateItemDto.name}`;
+  // }
   @Put(':id')
-  update(@Body() updateItemDto: CreateItemDto, @Param('id') id): string {
-    return `Update ${id} - Name: ${updateItemDto.name}`;
+  update(@Body() updateItemDto: CreateItemDto, @Param('id') id): Promise<Item> {
+    return this.itemsService.update(id, updateItemDto);
   }
 }
